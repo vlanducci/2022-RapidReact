@@ -99,7 +99,7 @@ class Drivetrain {
 	double _left = 0, _right = 0;
 };
 
-Drivetrain drive(99, 99, 99, 99);
+Drivetrain drive(1, 2, 3, 4);
 
 const int deadzone = 0.15;
 bool pressed = false;
