@@ -1,7 +1,3 @@
 {
-	"files.associations": {
-		"*.ejs": "html",
-		"chrono": "cpp",
-		"complex": "cpp"
-	}
+  "java.configuration.updateBuildConfiguration": "disabled"
 }
