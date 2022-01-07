@@ -15,7 +15,8 @@ using namespace wml;
 
 wml::TalonSrx motor1 = wml::TalonSrx{ 1 };
 wml::TalonSrx motor2 = wml::TalonSrx{ 2 };
-const double limit = 2;
+const double kMaxSpeed = 0.5;
+const double kLimit = 5;
 double deadzone = 0.3;
 
 wml::controllers::XboxController xbox = wml::controllers::XboxController{ 3 };
@@ -42,18 +43,18 @@ void Robot::TeleopPeriodic() {
 	double controller = xbox.GetAxis(xbox.kLeftYAxis);
 
 	// Test if the motor is at the limit
-	if (motor1.GetEncoderRotations() >= limit || motor2.GetEncoderTicks() >= limit) {
+	if (motor1.GetEncoderRotations() >= kLimit || motor2.GetEncoderRotations() >= kLimit) {
 		if (controller <= -deadzone) {
-			motorPower = controller;
+			motorPower = std::clamp(controller, -kMaxSpeed, 0.0);
 		}
 	// Test if the robot is at the bottom
-	} else if (motor1.GetEncoderRotations() <= 0.1 || motor2.GetEncoderTicks() <= 0.1) {
+	} else if (motor1.GetEncoderRotations() <= 0.1 || motor2.GetEncoderRotations() <= 0.1) {
 		if (controller >= deadzone) {
-			motorPower = controller;
+			motorPower = std::clamp(controller, 0.0, kMaxSpeed);
 		}
 	// If neither of the limts are reached
 	} else if (fabs(controller) >= deadzone) {
-		motorPower = controller;
+		motorPower = std::clamp(controller, -kMaxSpeed, kMaxSpeed);
 	}
 
 	motor1.Set(motorPower);
