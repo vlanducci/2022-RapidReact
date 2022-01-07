@@ -96,7 +96,7 @@ class Drivetrain {
 	double _left = 0, _right = 0;
 };
 
-Drivetrain drive(1, 3, 2, 4);
+Drivetrain drive(1, 2, 3, 4);
 
 void Robot::RobotInit() {}
 
