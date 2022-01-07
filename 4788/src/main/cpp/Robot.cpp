@@ -17,7 +17,12 @@ using namespace frc;
 // wml::TalonSrx rightF{99};
 // wml::TalonSrx rightB{99};
 
+wml::TalonSrx intakeM1{99};
+wml::TalonSrx intakeM2{99};
+
+
 wml::controllers::Joystick joy{0};
+wml::controllers::XboxController xbox{1};
 
 class Drivetrain {
  public:
@@ -58,7 +63,7 @@ class Drivetrain {
 		double left1 = 0, left2 = 0, right1 = 0, right2 = 0;
 
 		// Forwards back
-		if (joyY > 0.15) {
+		if (fabs(joyY) > 0.15) {
 			left1 += joyY;
 			left2 += joyY;
 			right1 += joyY;
@@ -66,20 +71,19 @@ class Drivetrain {
 		}
 
 		// Left right
-		if (joyX) {
+		if (fabs(joyX) > 0.15) {
 			left1 += -joyX;
 			left2 += joyX;
-			right1 += -joyX;
-			right2 += joyX;
+			right1 += joyX;
+			right2 += -joyX;
 		}
 
 		// Rotation
-		if (joyZ) {
+		if (fabs(joyZ) > 0.15) {
 			left1 += joyZ;
 			left2 += joyZ;
 			right1 += -joyZ;
 			right2 += -joyZ;
-
 		}
 		_leftM1->Set(left1);
 		_leftM2->Set(left2);
@@ -108,24 +112,19 @@ void Robot::AutonomousPeriodic() {}
 
 // Manual Robot Logic
 void Robot::TeleopInit() {
-	// leftM.SetInverted(true);
-	// rightM.SetInverted(false);
+	// put invert stuff here
 }
 void Robot::TeleopPeriodic() {
 	std::cout << "Robot code running" << std::endl;
-	// double leftPower = 0, rightPower = 0;
-	
-	// // Forwards and backwards
-	// if (fabs(joy.GetAxis(joy.kYAxis)) >= 0.15) {
-	// 	leftPower += joy.GetAxis(joy.kYAxis);
-	// 	rightPower += joy.GetAxis(joy.kYAxis);
-	// }
-	
-	// // Turning
-	// if (fabs(joy.GetAxis(joy.kZAxis)) >= 0.15) {
-	// 	leftPower += -joy.GetAxis(joy.kZAxis); 
-	// 	rightPower += joy.GetAxis(joy.kZAxis); 
-	// }
+	double intakeMPower = 0;
+
+	// motors for intake
+	if (fabs(xbox.GetButton(xbox.kRightThrottle)) >= 0.15) {
+		intakeMPower = xbox.GetButton(xbox.kRightThrottle);
+	}
+
+	intakeM1.Set(intakeMPower);
+	intakeM2.Set(intakeMPower);
 
 	drive.set(fabs(joy.GetAxis(joy.kXAxis)), fabs(joy.GetAxis(joy.kYAxis)), fabs(joy.GetAxis(joy.kZAxis)));
 }
