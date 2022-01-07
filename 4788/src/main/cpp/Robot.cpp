@@ -13,12 +13,46 @@ using namespace wml;
 // 	}
 // }
 
-wml::TalonSrx motor1 = wml::TalonSrx{ 1 };
-wml::TalonSrx motor2 = wml::TalonSrx{ 2 };
-const double limit = 2;
-double deadzone = 0.3;
+class Belevator {
+ public:
+	Belevator(int motor1 = 0, int motor2 = 1, double maxSpeed = 0.5, double limit = 5, double deadzone = 0.3) {
+		_motor1 = new wml::TalonSrx(motor1);
+		_motor2 = new wml::TalonSrx(motor2);
+
+		maxSpeed = maxSpeed;
+		limit = limit;
+		deadzone = deadzone;
+	}
+
+	void set(double xbox) {
+		double motorPower = 0;
+
+		if (_motor1->GetEncoderRotations() >= limit || _motor2->GetEncoderTicks() >= limit) {
+			if (xbox <= -deadzone) {
+				motorPower = xbox;
+			}
+		// Test if the robot is at the bottom
+		} else if (_motor1->GetEncoderRotations() <= 0.1 || _motor2->GetEncoderTicks() <= 0.1) {
+			if (xbox >= deadzone) {
+				motorPower = xbox;
+			}
+		// If neither of the limts are reached
+		} else if (fabs(xbox) >= deadzone) {
+			motorPower = xbox;
+		}
+
+		_motor1->Set(motorPower);
+		_motor2->Set(motorPower);
+	}
+ private:
+	wml::TalonSrx *_motor1, *_motor2;
+	double maxSpeed;
+	double limit;
+	double deadzone;
+};
 
 wml::controllers::XboxController xbox = wml::controllers::XboxController{ 3 };
+Belevator belev(0, 1, 0.5, 5, 0.3);
 
 void Robot::RobotInit() {}
 
@@ -38,26 +72,7 @@ void Robot::AutonomousPeriodic() {
 void Robot::TeleopInit() {}
 void Robot::TeleopPeriodic() {
 	// Create variable for holding power and get the controller
-	double motorPower = 0;
-	double controller = xbox.GetAxis(xbox.kLeftYAxis);
-
-	// Test if the motor is at the limit
-	if (motor1.GetEncoderRotations() >= limit || motor2.GetEncoderTicks() >= limit) {
-		if (controller <= -deadzone) {
-			motorPower = controller;
-		}
-	// Test if the robot is at the bottom
-	} else if (motor1.GetEncoderRotations() <= 0.1 || motor2.GetEncoderTicks() <= 0.1) {
-		if (controller >= deadzone) {
-			motorPower = controller;
-		}
-	// If neither of the limts are reached
-	} else if (fabs(controller) >= deadzone) {
-		motorPower = controller;
-	}
-
-	motor1.Set(motorPower);
-	motor2.Set(motorPower);
+	belev.set(xbox.GetAxis(xbox.kLeftYAxis));
 } 
 
 void Robot::TestInit() {}
