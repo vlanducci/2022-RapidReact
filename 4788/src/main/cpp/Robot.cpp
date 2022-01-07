@@ -29,16 +29,16 @@ class Belevator {
 
 		if (_motor1->GetEncoderRotations() >= _limit || _motor2->GetEncoderTicks() >= _limit) {
 			if (xbox <= -_deadzone) {
-				motorPower = xbox;
+				motorPower = std::clamp(xbox, -_maxSpeed, 0.0);
 			}
 		// Test if the robot is at the bottom
 		} else if (_motor1->GetEncoderRotations() <= 0.1 || _motor2->GetEncoderTicks() <= 0.1) {
 			if (xbox >= _deadzone) {
-				motorPower = xbox;
+				motorPower = std::clamp(xbox, 0.0, _maxSpeed);
 			}
 		// If neither of the limts are reached
 		} else if (fabs(xbox) >= _deadzone) {
-			motorPower = xbox;
+			motorPower = std::clamp(xbox, -_maxSpeed, _maxSpeed);
 		}
 
 		_motor1->Set(motorPower);
