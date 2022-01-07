@@ -75,10 +75,10 @@ class Drivetrain {
 
 		// Left right
 		if (fabs(joyX) > 0.15) {
-			left1 += -joyX;
-			left2 += joyX;
-			right1 += joyX;
-			right2 += -joyX;
+			left1 += joyX;
+			left2 += -joyX;
+			right1 += -joyX;
+			right2 += joyX;
 		}
 
 		// Rotation
@@ -99,7 +99,7 @@ class Drivetrain {
 	double _left = 0, _right = 0;
 };
 
-Drivetrain drive(1, 2, 3, 4);
+Drivetrain drive(4, 1, 6, 8);
 
 const int deadzone = 0.15;
 bool pressed = false;
