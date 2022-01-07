@@ -52,7 +52,7 @@ class Belevator {
 };
 
 wml::controllers::XboxController xbox = wml::controllers::XboxController{ 3 };
-Belevator belev(0, 1, 0.5, 5, 0.3);
+Belevator belev(5, 6, 0.5, 1, 0.3);
 
 void Robot::RobotInit() {}
 
