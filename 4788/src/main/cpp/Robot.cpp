@@ -19,25 +19,25 @@ class Belevator {
 		_motor1 = new wml::TalonSrx(motor1);
 		_motor2 = new wml::TalonSrx(motor2);
 
-		maxSpeed = maxSpeed;
-		limit = limit;
-		deadzone = deadzone;
+		_maxSpeed = maxSpeed;
+		_limit = limit;
+		_deadzone = deadzone;
 	}
 
 	void set(double xbox) {
 		double motorPower = 0;
 
-		if (_motor1->GetEncoderRotations() >= limit || _motor2->GetEncoderTicks() >= limit) {
-			if (xbox <= -deadzone) {
+		if (_motor1->GetEncoderRotations() >= _limit || _motor2->GetEncoderTicks() >= _limit) {
+			if (xbox <= -_deadzone) {
 				motorPower = xbox;
 			}
 		// Test if the robot is at the bottom
 		} else if (_motor1->GetEncoderRotations() <= 0.1 || _motor2->GetEncoderTicks() <= 0.1) {
-			if (xbox >= deadzone) {
+			if (xbox >= _deadzone) {
 				motorPower = xbox;
 			}
 		// If neither of the limts are reached
-		} else if (fabs(xbox) >= deadzone) {
+		} else if (fabs(xbox) >= _deadzone) {
 			motorPower = xbox;
 		}
 
@@ -46,9 +46,9 @@ class Belevator {
 	}
  private:
 	wml::TalonSrx *_motor1, *_motor2;
-	double maxSpeed;
-	double limit;
-	double deadzone;
+	double _maxSpeed;
+	double _limit;
+	double _deadzone;
 };
 
 wml::controllers::XboxController xbox = wml::controllers::XboxController{ 3 };
