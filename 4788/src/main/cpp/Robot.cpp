@@ -17,8 +17,8 @@ using namespace frc;
 // wml::TalonSrx rightF{99};
 // wml::TalonSrx rightB{99};
 
-wml::TalonSrx intakeM1{99};
-wml::TalonSrx intakeM2{99};
+wml::TalonSrx intakeM1{7};
+wml::TalonSrx intakeM2{2};
 
 wml::controllers::Joystick joy{0};
 wml::controllers::XboxController xbox{ 1 };
@@ -34,7 +34,7 @@ class Drivetrain {
 		_leftM1 = new wml::TalonSrx(topLeft);
 		_leftM2 = new wml::TalonSrx(bottomLeft);
 
-		_leftM1->SetInverted(true);
+		_leftM1->SetInverted(false);
 		_leftM2->SetInverted(true);
 	}
 
@@ -99,7 +99,7 @@ class Drivetrain {
 	double _left = 0, _right = 0;
 };
 
-Drivetrain drive(4, 1, 6, 8);
+Drivetrain drive(14, 1, 6, 8);
 
 const int deadzone = 0.15;
 bool pressed = false;
@@ -107,7 +107,7 @@ bool pressed = false;
 
 class Belevator {
  public:
-	Belevator(int motor1 = 0, int motor2 = 1, double maxSpeed = 0.5, double limit = 5, double deadzone = 0.3) {
+	Belevator(int motor1 = 5, int motor2 = 6, double maxSpeed = 0.5, double limit = 5, double deadzone = 0.3) {
 		_motor1 = new wml::TalonSrx(motor1);
 		_motor2 = new wml::TalonSrx(motor2);
 
@@ -119,19 +119,19 @@ class Belevator {
 	void set(double xbox) {
 		double motorPower = 0;
 
-		if (_motor1->GetEncoderRotations() >= _limit || _motor2->GetEncoderTicks() >= _limit) {
-			if (xbox <= -_deadzone) {
-				motorPower = std::clamp(xbox, -_maxSpeed, 0.0);
-			}
-		// Test if the robot is at the bottom
-		} else if (_motor1->GetEncoderRotations() <= 0.1 || _motor2->GetEncoderTicks() <= 0.1) {
-			if (xbox >= _deadzone) {
-				motorPower = std::clamp(xbox, 0.0, _maxSpeed);
-			}
+		// //if (_motor1->GetEncoderRotations() >= _limit) {
+		// 	if (xbox <= -_deadzone) {
+		// 		motorPower = std::clamp(xbox, -_maxSpeed, 0.0);
+		// 	}
+		// // Test if the robot is at the bottom
+		// //} else if (_motor1->GetEncoderRotations() <= 0.1) {
+		// 	if (xbox >= _deadzone) {
+		// 		motorPower = std::clamp(xbox, 0.0, _maxSpeed);
+		//	}
 		// If neither of the limts are reached
-		} else if (fabs(xbox) >= _deadzone) {
-			motorPower = std::clamp(xbox, -_maxSpeed, _maxSpeed);
-		}
+		//} else if (fabs(xbox) >= _deadzone) {
+		motorPower = std::clamp(xbox, -_maxSpeed, _maxSpeed);
+		//
 
 		_motor1->Set(motorPower);
 		_motor2->Set(motorPower);
@@ -143,29 +143,29 @@ class Belevator {
 	double _deadzone;
 };
 
-Belevator belev{5, 6, 0.5, 1, 0.3};
+Belevator belev{3, 5, 0.5, 1, 0.2};
 
 // Intake Wheel Motors
-wml::TalonSrx wheelMotorL{7};
-wml::TalonSrx wheelMotorR{8};
+wml::TalonSrx wheelMotorL{2};
+wml::TalonSrx wheelMotorR{7};
 
 // Solenoids
 wml::actuators::DoubleSolenoid pistonL{0, 1, 0.2}; // 0 = Forward, 1 = Reverse
 wml::actuators::DoubleSolenoid pistonR{2, 3, 0.2}; // 2 = Forward, 3 = Reverse
 
 // Compressor
-wml::actuators::Compressor compressor{0};
+wml::actuators::Compressor compressor{9};
 
-// Xbox Controller
+// Xbox Controller 
 // wml::controllers::XboxController xbox{1};
 
 void Robot::RobotInit() {
 	wheelMotorL.SetInverted(false);
 	wheelMotorR.SetInverted(false);
+
 }
 
 void Robot::RobotPeriodic() {
-	compressor.SetTarget(wml::actuators::kForward);
 }
 
 void Robot::DisabledInit() {
@@ -181,53 +181,63 @@ void Robot::AutonomousPeriodic() {
 
 // Manual Robot Logic
 void Robot::TeleopInit() {
+	compressor.SetTarget(wml::actuators::kForward);
 }
 
 void Robot::TeleopPeriodic() {
-	double wheelSpeed = 0;
+	// double wheelSpeed = 0;
 
-	if(xbox.GetButton(xbox.kX)) {
-		pressed = true;
-	}
+	// if(xbox.GetButton(xbox.kX)) {
+	// 	pressed = true;
+	// }
 
-	// Intake Wheels
-	if(xbox.GetAxis(xbox.kLeftThrottle) >= deadzone) {
-		wheelSpeed += xbox.GetAxis(xbox.kRightThrottle);
-	}
+	// // Intake Wheels
+	// if(xbox.GetAxis(xbox.kLeftThrottle) >= deadzone) {
+	// 	wheelSpeed += xbox.GetAxis(xbox.kRightThrottle);
+	// }
 
-	// Outake Wheels
-	if(xbox.GetAxis(xbox.kRightThrottle) >= deadzone) {
-		wheelSpeed += -xbox.GetAxis(xbox.kRightThrottle);
-	}
+	// // Outake Wheels
+	// if(xbox.GetAxis(xbox.kRightThrottle) >= deadzone) {
+	// 	wheelSpeed += -xbox.GetAxis(xbox.kRightThrottle);
+	// }
 
-	// Intake Pistons
-	if(pressed == true) {
-		pistonL.SetTarget(wml::actuators::kForward);
-		pistonR.SetTarget(wml::actuators::kForward);
-	} 
+	// // Intake Pistons
+	// if(pressed == true) {
+	// 	pistonL.SetTarget(wml::actuators::kForward);
+	// 	pistonR.SetTarget(wml::actuators::kForward);
+	// } 
 	
-	if(pressed == false) {
-		pistonL.SetTarget(wml::actuators::kReverse);
-		pistonR.SetTarget(wml::actuators::kReverse);
-	}
+	// if(pressed == false) {
+	// 	pistonL.SetTarget(wml::actuators::kReverse);
+	// 	pistonR.SetTarget(wml::actuators::kReverse);
+	// }
 
-	std::cout << "Robot code running" << std::endl;
+	// std::cout << "Robot code running" << std::endl;
 	double intakeMPower = 0;
 
 	// motors for intake
-	if (fabs(xbox.GetButton(xbox.kRightThrottle)) >= 0.15) {
-		intakeMPower = xbox.GetButton(xbox.kRightThrottle);
+	// intakeMPower = 0.5;
+	if (xbox.GetAxis(xbox.kRightThrottle) >= 0.15) {
+		intakeMPower = xbox.GetAxis(xbox.kRightThrottle);
 	}
+
+
+
+	if (xbox.GetAxis(xbox.kLeftThrottle) >= 0.15) {
+		intakeMPower = -xbox.GetAxis(xbox.kLeftThrottle);
+	}
+
+	// std::cout << "Intake power: " << intakeMPower << std::endl;
 	
-	wheelMotorL.Set(wheelSpeed);
-	wheelMotorR.Set(wheelSpeed);
+	// wheelMotorL.Set(wheelSpeed);
+	// wheelMotorR.Set(wheelSpeed);
 
 
 	intakeM1.Set(intakeMPower);
-	intakeM2.Set(intakeMPower);
+	intakeM2.Set(-intakeMPower);
 
-	drive.set(fabs(joy.GetAxis(joy.kXAxis)), fabs(joy.GetAxis(joy.kYAxis)), fabs(joy.GetAxis(joy.kZAxis)));
-	belev.set(xbox.GetAxis(xbox.kLeftYAxis));
+	drive.set(joy.GetAxis(joy.kXAxis), -joy.GetAxis(joy.kYAxis), joy.GetAxis(joy.kZAxis));
+	belev.set(-xbox.GetAxis(xbox.kLeftYAxis));
 }
 
 void Robot::TestInit() {}
