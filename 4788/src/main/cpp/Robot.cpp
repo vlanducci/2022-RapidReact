@@ -5,15 +5,8 @@ using namespace frc;
 
 const int deadzone = 0.15;
 bool pressed = false;
-// class Belevator {
-//  private:
-// 	wml::TalonSrx motor_1;
-// 	wml::TalonSrx motor_2;
-//  public:
-// 	void new(wml::TalonSrx motor_1, wml::TalonSrx motor_2) {
-		
-// 	}
-// }
+
+wml::controllers::XboxController xbox{ 1 };
 
 class Belevator {
  public:
@@ -53,7 +46,6 @@ class Belevator {
 	double _deadzone;
 };
 
-wml::controllers::XboxController xbox = wml::controllers::XboxController{ 3 };
 Belevator belev(5, 6, 0.5, 1, 0.3);
 
 // Intake Wheel Motors
@@ -68,7 +60,7 @@ wml::actuators::DoubleSolenoid pistonR{2, 3, 0.2}; // 2 = Forward, 3 = Reverse
 wml::actuators::Compressor compressor{0};
 
 // Xbox Controller
-wml::controllers::XboxController xbox{1};
+// wml::controllers::XboxController xbox{1};
 
 void Robot::RobotInit() {
 	wheelMotorL.SetInverted(false);
