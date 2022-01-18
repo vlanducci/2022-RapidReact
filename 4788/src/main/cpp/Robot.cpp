@@ -14,6 +14,7 @@ void Robot::RobotInit() {
 	ControlMap::InitSmartControllerGroup(robotMap.contGroup);
 
 	exampleElevator = new ExampleElevator(robotMap.exampleElevatorSystem);
+	intake = new Intake(robotMap.intakeSystem, robotMap.contGroup);
 }
 void Robot::RobotPeriodic() {
 	currentTimeStamp = (double)frc::Timer::GetFPGATimestamp();
