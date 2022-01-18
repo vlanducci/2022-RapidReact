@@ -69,7 +69,13 @@ struct RobotMap {
   }; ControlSystem controlSystem;
 
   struct ExampleElevatorSystem {
-    wml::TalonSrx elevatorMotor{ControlMap::ElevatorMotorPort, 2048};
-    wml::actuators::DoubleSolenoid elevatorSolenoid{ ControlMap::PCModule, ControlMap::ElevatorSolenoidPort, 0.1};
+    wml::TalonSrx elevatorMotor{ ControlMap::ElevatorMotorPort, 2048 };
+    wml::actuators::DoubleSolenoid elevatorSolenoid{ ControlMap::PCModule, ControlMap::ElevatorSolenoidPort, 0.1 };
   }; ExampleElevatorSystem exampleElevatorSystem;
+
+  struct IntakeSystem {
+    wml::TalonSrx intakeMotor{ ControlMap::IntakeMotorPort, 2048 };
+    wml::TalonSrx indexWheelMotor{ ControlMap::IndexWheelMotorPort, 2048 };
+    wml::actuators::DoubleSolenoid intakeSolenoid{ ControlMap::PCModule, ControlMap::IntakeSolenoidPort, 0.1 };
+  }; IntakeSystem intakeSystem;
 };

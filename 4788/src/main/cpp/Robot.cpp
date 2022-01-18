@@ -43,6 +43,7 @@ void Robot::AutonomousPeriodic() {}
 void Robot::TeleopInit() {}
 void Robot::TeleopPeriodic() {
 	exampleElevator->teleopOnUpdate(dt);
+	intake->teleopOnUpdate(dt);
 }
 
 // During Test Logic
