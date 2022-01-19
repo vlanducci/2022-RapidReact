@@ -10,8 +10,11 @@ Intake::Intake(RobotMap::IntakeSystem &intakeSystem, Controllers &contGroup) : _
 
 void Intake::teleopOnUpdate(double dt) {
   if (fabs(_contGroup.Get(ControlMap::Intake)) > 0.15) {
-    _intakeSystem.indexWheelMotor.Set(_contGroup.Get(ControlMap::Intake));
     _intakeSystem.intakeMotor.Set(_contGroup.Get(ControlMap::Intake));
+  }
+
+  if (_contGroup.Get(ControlMap::IndexWheel, wml::controllers::Controller::ButtonMode::ONRISE)) {
+    _intakeSystem.indexWheelMotor.Set(_contGroup.Get(ControlMap::IndexWheel));
   }
 
   if (_contGroup.Get(ControlMap::IntakeSolenoid, wml::controllers::Controller::ButtonMode::ONRISE)) {

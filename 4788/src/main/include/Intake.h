@@ -15,7 +15,6 @@ class Intake {
   void testOnUpdate(double dt);
 
  private:
-
   bool toggle = false;
 
   RobotMap::IntakeSystem &_intakeSystem;

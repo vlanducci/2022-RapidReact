@@ -55,6 +55,7 @@ struct ControlMap {
 
   // Intake
   inline static const wml::controllers::tAxis Intake{ CoDriver, wml::controllers::XboxController::kRightYAxis };
+  inline static const wml::controllers::tButton IndexWheel{ CoDriver, wml::controllers::XboxController::kY };
   inline static const wml::controllers::tButton IntakeSolenoid{ CoDriver, wml::controllers::XboxController::kB };
 
   // Shooter
