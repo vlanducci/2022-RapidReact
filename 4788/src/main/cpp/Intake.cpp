@@ -1,28 +1,27 @@
 #include "Intake.h"
 #include <iostream>
 
-using namespace wml;
-using namespace wml::controllers;
 
-Intake::Intake(RobotMap::IntakeSystem &intakeSystem, Controllers &contGroup) : _intakeSystem(intakeSystem), _contGroup(contGroup) {
-  intakeSystem.intakeSolenoid.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+Intake::Intake (RobotMap::IntakeSystem &intakeSystem, Controllers &contGroup) : _intakeSystem(intakeSystem), _contGroup(contGroup) { 
+  _intakeSystem.intakeSolenoid.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
 }
+  
 
-void Intake::teleopOnUpdate(double dt) {
-  if (fabs(_contGroup.Get(ControlMap::Intake)) > 0.15) {
-    _intakeSystem.intakeMotor.Set(_contGroup.Get(ControlMap::Intake));
-  }
+void Intake::teleopOnUpdate (double dt){
+  double intakeCont = fabs(_contGroup.Get(ControlMap::Intake)) > ControlMap::TriggerDeadzone ? _contGroup.Get(ControlMap::Intake) : 0;
+  _intakeSystem.intake.Set(intakeCont);
 
-  if (_contGroup.Get(ControlMap::IndexWheel, wml::controllers::Controller::ButtonMode::ONRISE)) {
-    _intakeSystem.indexWheelMotor.Set(_contGroup.Get(ControlMap::IndexWheel));
-  }
-
-  if (_contGroup.Get(ControlMap::IntakeSolenoid, wml::controllers::Controller::ButtonMode::ONRISE)) {
-    toggle = !toggle;
-  }
-  if (toggle) {
-    _intakeSystem.intakeSolenoid.SetTarget(wml::actuators::BinaryActuatorState::kForward);
-  } else {
-    // _intakeSystem.intakeSolenoid.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+  //switch to a toggle
+  if (_contGroup.Get(ControlMap::IntakeActuation)) {
+    switch(_intakeState) {
+      case IntakeStates::DEPLOYED:
+        _intakeSystem.intakeSolenoid.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
+        _intakeState = IntakeStates::STOWED;
+        break;
+      case IntakeStates::STOWED:
+        _intakeSystem.intakeSolenoid.SetTarget(wml::actuators::BinaryActuatorState::kForward);
+        _intakeState = IntakeStates::DEPLOYED;
+        break;
+    }
   }
 }

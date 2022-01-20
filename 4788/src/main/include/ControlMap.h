@@ -8,7 +8,7 @@
 // using namespace wml;
 // using namespace wml::controllers;
 
-struct ControlMap {
+struct ControlMap { 
   static void InitSmartControllerGroup(wml::controllers::SmartControllerGroup &contGroup) {
   //remap Here (map POV buttons to names ect)
   }
@@ -18,10 +18,10 @@ struct ControlMap {
   // Controllers
   static constexpr int Xbox1Port = 0;
   static constexpr int Xbox2Port = 1;
-
+ 
   // USB port numbers
-  static const int Driver = 1;
-  static const int CoDriver = 2;
+  static constexpr int Driver = 1;
+  static constexpr int CoDriver = 2;
 
   // Deadzone
   static constexpr double XboxDeadzone = 0.15;
@@ -33,25 +33,42 @@ struct ControlMap {
   static constexpr int CompressorPort = 0;
 
   // Drivetrain
+  static constexpr double TrackWidth = 0.56;
+  static constexpr double TrackDepth = 0.60;
+  static constexpr double WheelRadius = 0.0762; 
+  static constexpr double Mass = 50;
+
+  static constexpr int dbLeftPort1 = 99;
+  static constexpr int dbLeftPort2 = 99;
+
+  static constexpr int dbRightPort1 = 99;
+  static constexpr int dbRightPort2 = 99;
+
 
   // Intake
-  static constexpr int IntakeMotorPort = 99;
-  static constexpr int IndexWheelMotorPort = 99;
-  static constexpr int IntakeSolenoidPort = 99;
+  static constexpr int  intakeMotorPort = 99;
+  static constexpr int  intakeMotorPort_2 = 99;
+  static constexpr bool intakeSolenoid = false;
+  static constexpr int  intakeSolenoidPort = 99;
 
   // Shooter
+  static constexpr int leftFlyWheelPort = 10;
+  static constexpr int rightFlyWheelPort = 13;
+  static constexpr double flyWheelMass = 3;
+
+  //shooter PID stuff 
+  static constexpr double kp = 0.01;
+  static constexpr double ki = 0.0001;
+  static constexpr double kd = 0.00001;
+
+  static constexpr double goal = 0;
+  static constexpr double sum = 0;
+  static constexpr double derror = 0;
+  static constexpr double previousError = 0;
 
   // Climber
+  inline static const wml::controllers::tButton ClimberToggle{ CoDriver, XboxController::kA };
 
-  // Example Elevator
-  static constexpr int ElevatorMotorPort = 99;
-  static constexpr int ElevatorSolenoidPort = 99;
-  static constexpr bool ElevatorToggle = false;
-  static constexpr bool ReverseElevatorToggle = false;
-
-  // ------------------ Controls ------------------
-
-  // Drivetrain
 
   // Intake
   inline static const wml::controllers::tAxis Intake{ CoDriver, wml::controllers::XboxController::kRightYAxis };
@@ -59,11 +76,22 @@ struct ControlMap {
   inline static const wml::controllers::tButton IntakeSolenoid{ CoDriver, wml::controllers::XboxController::kB };
 
   // Shooter
+  // ------------------ Controls ------------------
 
+  // Shooter
+  inline static const wml::controllers::tAxis ShooterManualSpin{ CoDriver, XboxController::kLeftThrottle }; //used for manual control or testing the shooter
+
+  // Drivetrain
+  inline static const wml::controllers::tAxis drivebaseL{Driver, XboxController::kLeftYAxis};
+  inline static const wml::controllers::tAxis drivebaseR{Driver, XboxController::kRightYAxis};
+  
   // Climber
+   static constexpr int ClimberPort = 0;
+   static constexpr int ClimberSolenoidPort1 = 0;
+   static constexpr int ClimberSolenoidPort2 = 0;
 
-  // Example Elevator
-  inline static const wml::controllers::tAxis ExampleElevator{ CoDriver, wml::controllers::XboxController::kLeftYAxis };
-  inline static const wml::controllers::tButton ExampleElevatorActuation{ CoDriver, wml::controllers::XboxController::kY };
-  inline static const wml::controllers::tButton ExampleElevatorToggle{ CoDriver, wml::controllers::XboxController::kX };
+
+  // Intake
+  inline static const wml::controllers::tAxis Intake{ CoDriver, wml::controllers::XboxController::kLeftYAxis };
+  inline static const wml::controllers::tButton IntakeActuation{ CoDriver, wml::controllers::XboxController::kB };
 };
