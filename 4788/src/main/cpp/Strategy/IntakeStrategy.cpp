@@ -9,48 +9,12 @@ IntakeStrategy::IntakeStrategy(std::string name, Intake &intake, Shooter &shoote
 
 void IntakeStrategy::OnUpdate(double dt) {
   if (_contGroup.Get(ControlMap::indexManualToggleButton, wml::controllers::XboxController::ONRISE)) {
-    // if (indexManualToggle) {
-    //   indexManualToggle = false;
-    // } else {
-    //   indexManualToggle = true;
-    //   std::cout << "index manual" << std::endl;
-    // }
     _intake.setMagState(MagStates::kManual);
   }
 
   if (_contGroup.Get(ControlMap::indexManualStop, wml::controllers::XboxController::ONRISE)) {
-    // if (indexOverrideToggle) {
-    //   indexOverrideToggle = false;
-    // } else {
-    //   indexOverrideToggle = true;
-    //   std::cout << "index manual" << std::endl;
-    // }
     _intake.setMagState(MagStates::kEmpty);
   }
-
-  //TODO Output to suffleboard?
-
-  //& 
-  // if (_contGroup.Get(ControlMap::intakeManualToggle, wml::controllers::XboxController::ONRISE)) {
-  //   if (intakeManualToggle) {
-  //     intakeManualToggle = false;
-  //   } else {
-  //     intakeManualToggle = true;
-  //   }
-  // }
-
-  // if (intakeManualToggle) {
-  //   _intake.setMagState(MagStates::kManual);
-  // } else {
-  //   _intake.setMagState(MagStates::kEmpty);
-  // }
-  //& 
-
-  // if (indexOverrideToggle) {
-  // }
-
-  // if (indexManualToggle) {
-  // }
 
   if (_contGroup.Get(ControlMap::intakeActuation, wml::controllers::XboxController::ONRISE)) {
     if (_intakeToggle) {

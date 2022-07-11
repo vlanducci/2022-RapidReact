@@ -6,6 +6,8 @@
 #define M_PI 3.1415926535897932386264338327
 #endif
 
+
+//TODO FIX PID, EITHER NAMESPACE IN MP OR WML STUFF 
 DrivetrainTrajectoryStrategy::DrivetrainTrajectoryStrategy(std::string name, Drivetrain &drivetrain, ::Trajectory &trajectory) 
   : wml::Strategy(name), _drivetrain(drivetrain), _trajectory(trajectory), _control(trajectory, PID{ PID::Gains{0.02, 0, 0}, 1 }, PID{ PID::Gains{1, 0, 0}, 0.1 }) {
   // : wml::Strategy(name), _drivetrain(drivetrain), _trajectory(trajectory), _control(trajectory, PID{ PID::Gains{0.02, 0, 0}, 0.2, 1 }, PID{ PID::Gains{1, 0, 0}, 3, 0.1 }) {
