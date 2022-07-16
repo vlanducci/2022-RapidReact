@@ -82,7 +82,7 @@ void Robot::RobotPeriodic() {
   // shooter->update(dt);
   // robotMap.controlSystem.compressor.SetTarget(wml::actuators::BinaryActuatorState::kForward);
   // robotMap.controlSystem.compressor.Update(dt);
-  
+  auto testVisionTable = nt::NetworkTableInstance::GetDefault().GetTable("vision");
   auto table = nt::NetworkTableInstance::GetDefault().GetTable("Robot Data");
   auto dt_strat = drivetrain->GetActiveStrategy();
   if (dt_strat)
