@@ -133,7 +133,7 @@ void Robot::AutonomousInit() {
   // auto testStrat = std::make_shared<DriveToDistanceStrategy>("testStrat", *drivetrain, 1);
   // auto testStrat = std::make_shared<DrivetrainAngleStrategy>("testStrat", *drivetrain, 90.0);
 
-  bool success = Schedule(_auto.Vision(*drivetrain, true));
+  bool success = Schedule(_auto.Vision(*drivetrain));
 
   std::cout << "TEST " << success << std::endl;
 }
