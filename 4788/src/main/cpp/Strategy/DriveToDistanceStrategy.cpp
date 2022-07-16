@@ -114,14 +114,17 @@ void DrivetrainAngleStrategy::OnUpdate(double dt) {
   // double output = _control.getAnglePID().calculate(gyro, _heading, dt);
 
   auto inst = nt::NetworkTableInstance::GetDefault();
-  auto table = inst.GetTable("Auto stuff");
-  table->GetEntry("Angles").SetDouble(output);
+  auto table = inst.GetTable("DriveToAngleStrategy");
+  table->GetEntry("output").SetDouble(output);
   table->GetEntry("gyro").SetDouble(gyro);
+  table->GetEntry("goal").SetDouble(_goal);
 
   output = std::max(-_accSpeed, std::min(_accSpeed, output));
 
   leftPower += output * 1.1;  // replace with anglePID
   rightPower -= output;  // replace with anglePID
+  leftPower *= 0.6;
+  rightPower *= 0.6;
 
   table->GetEntry("leftPre").SetDouble(leftPower);
   table->GetEntry("rightPre").SetDouble(rightPower);
@@ -136,6 +139,7 @@ void DrivetrainAngleStrategy::OnUpdate(double dt) {
 
 void DrivetrainAngleStrategy::SetGoal(double newGoal) {
   _goal = newGoal;
+  _anglePID.SetSetpoint(newGoal);  // updating the PID goal
 }
 
 DriveToAngleRoughStrategy::DriveToAngleRoughStrategy(std::string name, Drivetrain &drivetrain, double goal) : Strategy(name), _drivetrain(drivetrain), _goal(goal) {

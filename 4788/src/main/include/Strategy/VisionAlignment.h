@@ -20,4 +20,5 @@ class VisionAlignment : public wml::Strategy {
   DrivetrainAngleStrategy _drivetrainAngleStrategy;
   double _lastYaw = 0;
   double _accSpeed = 0.2;
+  // double _continue = 0; //0 false, 1 true
 };

@@ -12,6 +12,6 @@ class Auto {
   std::shared_ptr<wml::Strategy> ThreeBallTerminal(wml::Drivetrain &drivetrain, Intake &intake, Shooter &shooter);
   std::shared_ptr<wml::Strategy> ThreeBallHanger(wml::Drivetrain &drivetrain, Intake &intake, Shooter &shooter);
   std::shared_ptr<wml::Strategy> OneTwoBallAuto(wml::Drivetrain &drivetrain, Intake &intake, Shooter &shooter);
-  std::shared_ptr<wml::Strategy> Vision(wml::Drivetrain &drivetrain);
+  std::shared_ptr<wml::Strategy> TurningTest(wml::Drivetrain &drivetrain, Intake &intake, Shooter &shooter);
+  std::shared_ptr<wml::Strategy> Vision(wml::Drivetrain &drivetrain, bool continue);
 };
-

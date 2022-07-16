@@ -12,6 +12,12 @@
     "DriveToAngleStrategy": {
       "open": true
     },
+    "PIDGains[AngleStratGains]": {
+      "open": true
+    },
+    "PIDGains[Drivetrain Velocity]": {
+      "open": true
+    },
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/Ungrouped/DigitalInput[0]": "Digital Input",

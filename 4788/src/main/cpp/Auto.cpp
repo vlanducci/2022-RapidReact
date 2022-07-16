@@ -97,15 +97,20 @@ std::shared_ptr<wml::Strategy> Auto::OneTwoBallAuto(wml::Drivetrain &drivetrain,
     ->Then()
     ->Add(std::make_shared<DrivetrainAngleStrategy>("Turn to hub", drivetrain, 10.750))
     ->Build();
-
   return autoStrat;
 };
 
-std::shared_ptr<wml::Strategy> Auto::Vision(wml::Drivetrain &drivetrain) {
+std::shared_ptr<wml::Strategy> Auto::Vision(wml::Drivetrain &drivetrain, double continue) {
   auto autoStrat = wml::StrategyBuilder{}.Start()
     ->Add(std::make_shared<VisionAlignment>("Align", drivetrain))
     ->Build();
+  return autoStrat;
+};
 
+std::shared_ptr<wml::Strategy> Auto::TurningTest(wml::Drivetrain &drivetrain, Intake &intake, Shooter &shooter) {
+  auto autoStrat = wml::StrategyBuilder{}.Start()
+    ->Add(std::make_shared<DrivetrainAngleStrategy>("Turn to hub", drivetrain, 10))
+    ->Build();
   return autoStrat;
 };
 
