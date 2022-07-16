@@ -3,7 +3,7 @@
 #include "Strategy/VisionAlignment.h"
 #include "ControlMap.h"
 
-VisionAlignment::VisionAlignment(std::string name, Drivetrain &drivetrain) : wml::Strategy(name), _drivetrain(drivetrain), _drivetrainAngleStrategy("VisionAngle", drivetrain, _lastYaw) {
+VisionAlignment::VisionAlignment(std::string name, Drivetrain &drivetrain, bool track) : wml::Strategy(name), _drivetrain(drivetrain), _drivetrainAngleStrategy("VisionAngle", drivetrain, _lastYaw), _track(track){
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
 }
@@ -19,16 +19,17 @@ void VisionAlignment::OnUpdate(double dt) {
   double yCords = _visionTable->GetEntry("targetPixelsY").GetDouble(0);
   double yawCords = _visionTable->GetEntry("targetYaw").GetDouble(0);
   double gyro = _drivetrain.GetConfig().gyro->GetAngle();
+  double isFinished = _visionTable->GetEntry("Is finished").SetBoolean(_drivetrainAngleStrategy.IsFinished());
 
   if (std::abs(yawCords - _lastYaw) > 0.005)
     _drivetrainAngleStrategy.SetGoal(gyro + yawCords);
 
   _drivetrainAngleStrategy.OnUpdate(dt);
 
-  // if (!_continue) {
+  if (!_track) {
     if (_drivetrainAngleStrategy.IsFinished())
       SetDone();
-  // }
+  }
 
   // nt::NetworkTableInstance::GetDefault().GetTable("testVisionTable")->GetEntry("lastYaw").SetDouble(_lastYaw);
 

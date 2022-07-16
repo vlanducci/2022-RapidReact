@@ -133,7 +133,7 @@ void Robot::AutonomousInit() {
   // auto testStrat = std::make_shared<DriveToDistanceStrategy>("testStrat", *drivetrain, 1);
   // auto testStrat = std::make_shared<DrivetrainAngleStrategy>("testStrat", *drivetrain, 90.0);
 
-  bool success = Schedule(_auto.Vision(*drivetrain, 0));
+  bool success = Schedule(_auto.Vision(*drivetrain));
 
   std::cout << "TEST " << success << std::endl;
 }
@@ -149,21 +149,16 @@ void Robot::TeleopInit() {
   Schedule(climber->GetDefaultStrategy(), true);
 }
 void Robot::TeleopPeriodic() {
-  // climber->updateClimber(dt);
 
-  // if (robotMap.contGroup.Get(ControlMap::climberActuate)) {
-  //   climberToggle = false;
-  // } else {
-  //   climberToggle = true;
-  // }
+  if (robotMap.contGroup.Get(ControlMap::visionAim)) {
+    isAiming = true;
+  } else {
+    isAiming = false;
+  }
 
-  // if (climberToggle) {
-  //   robotMap.climberSystem.climberSolenoid.SetTarget(wml::actuators::BinaryActuatorState::kForward);
-
-  // } else {
-  //   robotMap.climberSystem.climberSolenoid.SetTarget(wml::actuators::BinaryActuatorState::kReverse);
-  // }
-
+  if (isAiming) {
+    Schedule(_auto.Vision(*drivetrain));
+  }
 
   if (robotMap.contGroup.Get(ControlMap::GetOut, wml::controllers::XboxController::ONRISE)) {
     if (outToggle) {

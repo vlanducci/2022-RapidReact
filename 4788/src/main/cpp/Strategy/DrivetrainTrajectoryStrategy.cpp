@@ -51,6 +51,7 @@ void DrivetrainTrajectoryStrategy::OnUpdate(double dt) {
   table->GetEntry("gyro").SetDouble(gyro);
 
   _drivetrain.Set(-leftPower, -rightPower);
+  
   if (output.is_done) {
     SetDone();
   } else {

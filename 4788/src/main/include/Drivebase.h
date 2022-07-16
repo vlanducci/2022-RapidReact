@@ -13,4 +13,6 @@ class DrivetrainManual : public wml::Strategy {
  private:
   Drivetrain &_drivetrain;
   wml::controllers::SmartControllerGroup &_contGroup;
+
+  bool isAiming = false;
 };

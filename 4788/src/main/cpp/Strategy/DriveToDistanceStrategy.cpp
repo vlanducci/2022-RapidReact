@@ -98,6 +98,7 @@ void DrivetrainAngleStrategy::OnStart() {
 }
 
 void DrivetrainAngleStrategy::OnUpdate(double dt) {
+  _anglePID.SetIsDoneThreshold(5,1);
   double leftPower = 0, rightPower = 0;
   double gyro = _drivetrain.GetConfig().gyro->GetAngle();
 
@@ -123,8 +124,6 @@ void DrivetrainAngleStrategy::OnUpdate(double dt) {
 
   leftPower += output * 1.1;  // replace with anglePID
   rightPower -= output;  // replace with anglePID
-  leftPower *= 0.6;
-  rightPower *= 0.6;
 
   table->GetEntry("leftPre").SetDouble(leftPower);
   table->GetEntry("rightPre").SetDouble(rightPower);

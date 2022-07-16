@@ -100,9 +100,9 @@ std::shared_ptr<wml::Strategy> Auto::OneTwoBallAuto(wml::Drivetrain &drivetrain,
   return autoStrat;
 };
 
-std::shared_ptr<wml::Strategy> Auto::Vision(wml::Drivetrain &drivetrain, double continue) {
+std::shared_ptr<wml::Strategy> Auto::Vision(wml::Drivetrain &drivetrain) {
   auto autoStrat = wml::StrategyBuilder{}.Start()
-    ->Add(std::make_shared<VisionAlignment>("Align", drivetrain))
+    ->Add(std::make_shared<VisionAlignment>("Align", drivetrain, false))
     ->Build();
   return autoStrat;
 };

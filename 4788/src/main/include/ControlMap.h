@@ -111,6 +111,7 @@ struct ControlMap {
   // Drivetrain
   inline static const wml::controllers::tAxis leftDrive{driver, XboxController::kLeftYAxis};
   inline static const wml::controllers::tAxis rightDrive{driver, XboxController::kRightYAxis};
+  inline static const wml::controllers::tButton visionAim{ driver, XboxController::kBumperRight};
 
   // Climber
   inline static const wml::controllers::tButton climberActuate{ coDriver, wml::controllers::XboxController::kY };

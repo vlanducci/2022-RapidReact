@@ -68,4 +68,5 @@ private:
 
   bool outToggle = false;
   bool climberToggle = false;
+  bool isAiming = false;
 };

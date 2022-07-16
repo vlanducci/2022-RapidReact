@@ -9,7 +9,7 @@
 
 class VisionAlignment : public wml::Strategy {
  public:
-  VisionAlignment(std::string name, Drivetrain &drivetrain);
+  VisionAlignment(std::string name, Drivetrain &drivetrain, bool track);
 
   void OnStart() override;
   void OnUpdate(double dt) override;
@@ -20,5 +20,5 @@ class VisionAlignment : public wml::Strategy {
   DrivetrainAngleStrategy _drivetrainAngleStrategy;
   double _lastYaw = 0;
   double _accSpeed = 0.2;
-  // double _continue = 0; //0 false, 1 true
+  bool _track = false;
 };
