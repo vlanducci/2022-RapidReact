@@ -18,9 +18,10 @@ void VisionAlignment::OnUpdate(double dt) {
   double xCords = _visionTable->GetEntry("targetPixelsX").GetDouble(0); 
   double yCords = _visionTable->GetEntry("targetPixelsY").GetDouble(0);
   double yawCords = _visionTable->GetEntry("targetYaw").GetDouble(0);
+  double gyro = _drivetrain.GetConfig().gyro->GetAngle();
 
   if (std::abs(yawCords - _lastYaw) > 0.005)
-    _drivetrainAngleStrategy.SetGoal(yawCords);
+    _drivetrainAngleStrategy.SetGoal(gyro + yawCords);
 
   _drivetrainAngleStrategy.OnUpdate(dt);
 
