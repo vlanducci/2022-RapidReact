@@ -3,7 +3,7 @@
 #include "Strategy/VisionAlignment.h"
 #include "ControlMap.h"
 
-VisionAlignment::VisionAlignment(std::string name, Drivetrain &drivetrain) : wml::Strategy(name), _drivetrain(drivetrain), _drivetrainAngleStrategy("VisionAngle", drivetrain, _lastYaw){
+VisionAlignment::VisionAlignment(std::string name, Drivetrain &drivetrain, double continue) : wml::Strategy(name), _drivetrain(drivetrain), _drivetrainAngleStrategy("VisionAngle", drivetrain, _lastYaw), _continue(continue){
   Requires(&drivetrain);
   SetCanBeInterrupted(true);
 }
@@ -25,8 +25,10 @@ void VisionAlignment::OnUpdate(double dt) {
 
   _drivetrainAngleStrategy.OnUpdate(dt);
 
-  if (_drivetrainAngleStrategy.IsFinished())
-    SetDone();
+  if (!_continue) {
+    if (_drivetrainAngleStrategy.IsFinished())
+      SetDone();
+  }
 
   // nt::NetworkTableInstance::GetDefault().GetTable("testVisionTable")->GetEntry("lastYaw").SetDouble(_lastYaw);
 
