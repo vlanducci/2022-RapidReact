@@ -18,6 +18,12 @@
     "PIDGains[Drivetrain Velocity]": {
       "open": true
     },
+    "photonvision": {
+      "open": true,
+      "visionCam": {
+        "open": true
+      }
+    },
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/Ungrouped/DigitalInput[0]": "Digital Input",
