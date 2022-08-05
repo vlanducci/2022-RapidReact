@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include "Vision.h"
 #include "controllers/Controller.h"
 #include "RobotMap.h"
 #include "RobotControl.h"
@@ -21,4 +22,16 @@ class VisionAlignment : public wml::Strategy {
   double _lastYaw = 0;
   double _accSpeed = 0.2;
   bool _track = false;
+};
+
+class VisionSnapStrat : public wml::Strategy {
+ public:
+  VisionSnapStrat(std::string name, Vision &vision);
+
+  void OnUpdate(double dt) override;
+
+ private:
+  std::shared_ptr<nt::NetworkTable> _visionTable = nt::NetworkTableInstance::GetDefault().GetTable("photonvision/visionCam");
+  bool isInnerCircle = false;
+  Vision &_vision;
 };

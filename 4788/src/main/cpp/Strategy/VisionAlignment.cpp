@@ -12,6 +12,7 @@ void VisionAlignment::OnStart() {
   _drivetrainAngleStrategy.OnStart();
 }
 
+//drivetrain snap strat 
 void VisionAlignment::OnUpdate(double dt) {
   double leftPower = 0, rightPower = 0;
 
@@ -20,6 +21,8 @@ void VisionAlignment::OnUpdate(double dt) {
   double yawCords = _visionTable->GetEntry("targetYaw").GetDouble(0);
   double gyro = _drivetrain.GetConfig().gyro->GetAngle();
   double isFinished = _visionTable->GetEntry("Is finished").SetBoolean(_drivetrainAngleStrategy.IsFinished());
+
+  // 3.21m 
 
   if (std::abs(yawCords - _lastYaw) > 0.005)
     _drivetrainAngleStrategy.SetGoal(gyro + yawCords);
@@ -36,5 +39,34 @@ void VisionAlignment::OnUpdate(double dt) {
   std::cout << "yawCord: " << yawCords << std::endl;
   std::cout << "gyro: " << gyro << std::endl;
 
+
+
   _lastYaw = yawCords;
 }
+
+
+VisionSnapStrat::VisionSnapStrat(std::string name, Vision &vision) : wml::Strategy(name), _vision(vision) {
+  SetCanBeInterrupted(true);
+  SetCanBeReused(true);
+  Requires(&vision);
+  // SetPassive(true);
+  std::cout << "vision snap strat" << std::endl;
+}
+
+void VisionSnapStrat::OnUpdate(double dt) {
+  // std::cout << "Fuck" << std::endl;
+  auto inst = nt::NetworkTableInstance::GetDefault();
+  auto snapTable = inst.GetTable("Snap vision stuff");
+  snapTable->GetEntry("isOnTarget").SetBoolean(isInnerCircle);
+
+  double pitch = _visionTable->GetEntry("targetPitch").GetDouble(0);
+
+  if (pitch <= -18 && pitch >= -22) {
+    isInnerCircle = true;
+    std::cout << "inner target" << std::endl;
+  } else {
+    isInnerCircle = false;
+  }
+}
+
+//-20 inner circle

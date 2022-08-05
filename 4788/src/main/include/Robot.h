@@ -10,12 +10,14 @@
 #include "Trajectories.h"
 #include "Climber.h"
 #include "Auto.h"
+#include "Vision.h"
 
 
 #include "Strategy/ShooterStrategy.h"
 #include "Strategy/IntakeStrategy.h"
 #include "Strategy/ClimberStrategy.h"
 #include "Strategy/GetOutStrategy.h"
+#include "Strategy/VisionAlignment.h"
 
 
 class Robot : public frc::TimedRobot, protected wml::StrategyController, protected wml::NTProvider, protected wml::loops::LoopSystem {
@@ -63,10 +65,12 @@ private:
   Shooter *shooter;
   Intake *intake;
   Climber *climber;
+  Vision *vision;
 
   Auto _auto;
 
   bool outToggle = false;
   bool climberToggle = false;
   bool isAiming = false;
+  bool isDistance = false;
 };

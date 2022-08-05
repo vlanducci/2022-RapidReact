@@ -73,7 +73,7 @@ struct ControlMap {
     inline static bool shooterPID = false;
 
     inline static double shooterEjectPower = 0.8;
-    inline static double innerCircleShootValue = 200;
+    inline static double innerCircleShootValue = 225;
     inline static double outerCircleShootValue = 300;
     inline static double farShootValue = 400;
     inline static double noahShootValue = 500;
@@ -132,4 +132,6 @@ struct ControlMap {
 
   inline static const wml::controllers::tButton GetOut{ driver, wml::controllers::XboxController::kY };
   inline static const wml::controllers::tButton GetOutBoogalloo{ driver, wml::controllers::XboxController::kA };
+
+  inline static const wml::controllers::tButton Distance{ driver, wml::controllers::XboxController::kBumperLeft};
 };

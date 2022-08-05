@@ -5,7 +5,6 @@ ShooterManualStrategy::ShooterManualStrategy(std::string name, Shooter &shooter,
   SetCanBeInterrupted(true);
   SetCanBeReused(true);
   Requires(&shooter);
-
 }
 
 void ShooterManualStrategy::OnUpdate(double dt) {

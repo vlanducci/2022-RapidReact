@@ -34,10 +34,14 @@ void Robot::RobotInit() {
   intake->StartLoop(100);
   robotMap.intakeSystem.intake.SetInverted(true);
   robotMap.intakeSystem.indexWheel.SetInverted(true);
-  
+
   climber = new Climber(robotMap.climberSystem, robotMap.contGroup);
   climber->SetDefault(std::make_shared<ClimberStrategy>("climber manual strategy", *climber, robotMap.contGroup));
   climber->StartLoop(100);
+
+  vision = new Vision();
+  vision->SetDefault(std::make_shared<VisionSnapStrat>("vision snap strategy", *vision));
+  vision->StartLoop(100);
 
   drivetrain = new Drivetrain(robotMap.drivebaseSystem.drivetrainConfig, robotMap.drivebaseSystem.gainsVelocity);
 
@@ -56,11 +60,14 @@ void Robot::RobotInit() {
   drivetrain->GetConfig().leftDrive.transmission->SetInverted(true);
   drivetrain->GetConfig().rightDrive.transmission->SetInverted(false);
 
+  // Schedule(_auto.SnapStrat());
+
   // Register our systems to be called via strategy
   StrategyController::Register(climber);
   StrategyController::Register(drivetrain);
   StrategyController::Register(shooter);
   StrategyController::Register(intake);
+  StrategyController::Register(vision);
   NTProvider::Register(drivetrain);
 
   trajectories.build();
@@ -101,10 +108,7 @@ void Robot::RobotPeriodic() {
     table->GetEntry("Shooter Strategy").SetString(sh_strat->GetStrategyName());
   else
     table->GetEntry("Shooter Strategy").SetString("<none>");
-
   NTProvider::Update();
-
-  
 
   table->GetEntry("Gyro").SetDouble(drivetrain->GetConfig().gyro->GetAngle());
 
@@ -133,31 +137,45 @@ void Robot::AutonomousInit() {
   // auto testStrat = std::make_shared<DriveToDistanceStrategy>("testStrat", *drivetrain, 1);
   // auto testStrat = std::make_shared<DrivetrainAngleStrategy>("testStrat", *drivetrain, 90.0);
 
-  bool success = Schedule(_auto.Vision(*drivetrain));
+  // bool success = Schedule(_auto.SnapStrat());
 
-  std::cout << "TEST " << success << std::endl;
+  // std::cout << "TEST " << success << std::endl;
 }
 void Robot::AutonomousPeriodic() {
+  // if (_auto.SnapStrat()->GetStrategyState() == StrategyState::RUNNING) {
+  //   std::cout << "strategy running" << std::endl;
+  // }
 }
 
 // Manual Robot Logic
 void Robot::TeleopInit() {
   outToggle = false;
+  // Schedule(std::make_shared<VisionSnapStrat>("vision snap to target strat"));
   Schedule(drivetrain->GetDefaultStrategy(), true);
   Schedule(shooter->GetDefaultStrategy(), true);
   Schedule(intake->GetDefaultStrategy(), true);
   Schedule(climber->GetDefaultStrategy(), true);
+  Schedule(vision->GetDefaultStrategy(), true);
 }
 void Robot::TeleopPeriodic() {
 
+  // if (robotMap.contGroup.Get(ControlMap::Distance)) {
+  //   isDistance = true;
+  // } else {
+  //   isDistance = false;
+  // }
   if (robotMap.contGroup.Get(ControlMap::visionAim)) {
     isAiming = true;
   } else {
     isAiming = false;
   }
 
+  // if (isDistance) {
+  //   Schedule(_auto.SnapStrat());
+  // }
+
   if (isAiming) {
-    Schedule(_auto.Vision(*drivetrain));
+    Schedule(_auto.Vision(*drivetrain)); //incorrect 
   }
 
   if (robotMap.contGroup.Get(ControlMap::GetOut, wml::controllers::XboxController::ONRISE)) {

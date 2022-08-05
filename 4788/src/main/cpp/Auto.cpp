@@ -114,6 +114,14 @@ std::shared_ptr<wml::Strategy> Auto::TurningTest(wml::Drivetrain &drivetrain, In
   return autoStrat;
 };
 
+// std::shared_ptr<wml::Strategy> Auto::SnapStrat() {
+//   auto autoStrat = wml::StrategyBuilder{}.Start()
+//     ->Add(std::make_shared<VisionSnapStrat>("distace"))
+//     ->Build();
+//   return autoStrat;
+// };
+
+
 // void someFunction() {
 //   auto autoStrat = StrategyBuilder{}.Start()
 //     ->Add<DriveToDistanceStrategy>("Move to Ball 1", *drivetrain, trajectory)
