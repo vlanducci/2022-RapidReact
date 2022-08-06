@@ -38,3 +38,18 @@ void VisionAlignment::OnUpdate(double dt) {
 
   _lastYaw = yawCords;
 }
+
+
+// ------------- Speed for Shooter Thing -------------
+
+VisionSnapStrat::VisionSnapStrat(std::string name) : wml::Strategy(name){
+  SetCanBeInterrupted(true);
+}
+
+void VisionSnapStrat::OnStart() {}
+
+void VisionSnapStrat::OnUpdate(double dt) {
+  double pitchCords = _visionTable->GetEntry("targetPitch").GetDouble(0);
+
+  std::cout << "pitch: " << pitchCords << std::endl;
+}
