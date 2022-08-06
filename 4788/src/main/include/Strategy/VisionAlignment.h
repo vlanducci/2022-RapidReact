@@ -22,16 +22,19 @@ class VisionAlignment : public wml::Strategy {
   double _lastYaw = 0;
   double _accSpeed = 0.2;
   bool _track = false;
-};
+};  // moves robot to align with tape
 
 class VisionSnapStrat : public wml::Strategy {
  public:
-  VisionSnapStrat(std::string name, Vision &vision);
+  VisionSnapStrat(std::string name);
 
   void OnUpdate(double dt) override;
 
  private:
   std::shared_ptr<nt::NetworkTable> _visionTable = nt::NetworkTableInstance::GetDefault().GetTable("photonvision/visionCam");
-  bool isInnerCircle = false;
-  Vision &_vision;
+  // bool isInnerCircle = false;
+  double fixPitch1 = 20;
+  double fixSpeed1 = 0.5;
+  double fixPitch2 = -10;
+  double fixSpeed2 = 0.8;
 };

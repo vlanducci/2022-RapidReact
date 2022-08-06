@@ -39,16 +39,17 @@ void VisionAlignment::OnUpdate(double dt) {
   std::cout << "yawCord: " << yawCords << std::endl;
   std::cout << "gyro: " << gyro << std::endl;
 
-
-
   _lastYaw = yawCords;
 }
 
 
-VisionSnapStrat::VisionSnapStrat(std::string name, Vision &vision) : wml::Strategy(name), _vision(vision) {
+// -------- Shooting and Distance Vision Stuff -------- 
+
+
+VisionSnapStrat::VisionSnapStrat(std::string name) : wml::Strategy(name) {
   SetCanBeInterrupted(true);
   SetCanBeReused(true);
-  Requires(&vision);
+  // Requires(&vision);
   // SetPassive(true);
   std::cout << "vision snap strat" << std::endl;
 }
@@ -57,16 +58,18 @@ void VisionSnapStrat::OnUpdate(double dt) {
   // std::cout << "Fuck" << std::endl;
   auto inst = nt::NetworkTableInstance::GetDefault();
   auto snapTable = inst.GetTable("Snap vision stuff");
-  snapTable->GetEntry("isOnTarget").SetBoolean(isInnerCircle);
+  // snapTable->GetEntry("isOnTarget").SetBoolean(isInnerCircle);
 
   double pitch = _visionTable->GetEntry("targetPitch").GetDouble(0);
 
-  if (pitch <= -18 && pitch >= -22) {
-    isInnerCircle = true;
-    std::cout << "inner target" << std::endl;
-  } else {
-    isInnerCircle = false;
-  }
-}
+  double newSpeed = (fixSpeed2-fixSpeed1)/(fixPitch2-fixPitch1)*(pitch-fixPitch1)+fixSpeed1;
+  snapTable->GetEntry("newSpeed").SetDouble(newSpeed);
 
-//-20 inner circle
+
+  // if (pitch <= -18 && pitch >= -22) {
+  //   isInnerCircle = true;
+  //   std::cout << "inner target" << std::endl;
+  // } else {
+  //   isInnerCircle = false;
+  // }
+} //-20 inner circle

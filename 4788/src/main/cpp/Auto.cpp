@@ -114,6 +114,13 @@ std::shared_ptr<wml::Strategy> Auto::TurningTest(wml::Drivetrain &drivetrain, In
   return autoStrat;
 };
 
+std::shared_ptr<wml::Strategy> Auto::SnapStratTest() {
+  auto autoStrat = wml::StrategyBuilder{}.Start()
+    ->Add(std::make_shared<VisionSnapStrat>("Align"))
+    ->Build();
+  return autoStrat;
+};
+
 // std::shared_ptr<wml::Strategy> Auto::SnapStrat() {
 //   auto autoStrat = wml::StrategyBuilder{}.Start()
 //     ->Add(std::make_shared<VisionSnapStrat>("distace"))

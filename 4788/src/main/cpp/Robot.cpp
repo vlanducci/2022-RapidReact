@@ -39,9 +39,9 @@ void Robot::RobotInit() {
   climber->SetDefault(std::make_shared<ClimberStrategy>("climber manual strategy", *climber, robotMap.contGroup));
   climber->StartLoop(100);
 
-  vision = new Vision();
-  vision->SetDefault(std::make_shared<VisionSnapStrat>("vision snap strategy", *vision));
-  vision->StartLoop(100);
+  // vision = new Vision();
+  // vision->SetDefault(std::make_shared<Vision>("vision snap strategy"));
+  // vision->StartLoop(100);
 
   drivetrain = new Drivetrain(robotMap.drivebaseSystem.drivetrainConfig, robotMap.drivebaseSystem.gainsVelocity);
 
@@ -59,8 +59,6 @@ void Robot::RobotInit() {
   //Invert one side of our drivetrain so it'll drive straight
   drivetrain->GetConfig().leftDrive.transmission->SetInverted(true);
   drivetrain->GetConfig().rightDrive.transmission->SetInverted(false);
-
-  // Schedule(_auto.SnapStrat());
 
   // Register our systems to be called via strategy
   StrategyController::Register(climber);
@@ -145,6 +143,7 @@ void Robot::AutonomousPeriodic() {
   // if (_auto.SnapStrat()->GetStrategyState() == StrategyState::RUNNING) {
   //   std::cout << "strategy running" << std::endl;
   // }
+  Schedule(_auto.Vision(*drivetrain));
 }
 
 // Manual Robot Logic
@@ -175,7 +174,7 @@ void Robot::TeleopPeriodic() {
   // }
 
   if (isAiming) {
-    Schedule(_auto.Vision(*drivetrain)); //incorrect 
+    // Schedule(_auto.Vision(*drivetrain)); //incorrect 
   }
 
   if (robotMap.contGroup.Get(ControlMap::GetOut, wml::controllers::XboxController::ONRISE)) {
