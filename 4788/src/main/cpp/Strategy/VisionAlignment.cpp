@@ -2,6 +2,7 @@
 #include <networktables/NetworkTableInstance.h>
 #include "Strategy/VisionAlignment.h"
 #include "ControlMap.h"
+#include "cmath"
 
 VisionAlignment::VisionAlignment(std::string name, Drivetrain &drivetrain, bool track) : wml::Strategy(name), _drivetrain(drivetrain), _drivetrainAngleStrategy("VisionAngle", drivetrain, _lastYaw), _track(track){
   Requires(&drivetrain);
@@ -42,44 +43,18 @@ void VisionAlignment::OnUpdate(double dt) {
 
 // ------------- Speed for Shooter Thing -------------
 
-<<<<<<< Updated upstream
-VisionSnapStrat::VisionSnapStrat(std::string name) : wml::Strategy(name){
+
+SnapStrat::SnapStrat(std::string name) : wml::Strategy(name){
   SetCanBeInterrupted(true);
 }
 
-void VisionSnapStrat::OnStart() {}
-
-void VisionSnapStrat::OnUpdate(double dt) {
-  double pitchCords = _visionTable->GetEntry("targetPitch").GetDouble(0);
-
-  std::cout << "pitch: " << pitchCords << std::endl;
+void SnapStrat::OnUpdate(double dt) {
+  double cameraAngle = 70;
+  double pitch = 0;
+  double tapeHeight = 0;
+  double ringHeight = 0;
+  double distanceToRing = 0.679+tapeHeight/tan(pitch*3.1416/180);  // Centre of ring in meters
+  double exitVelocity = pow(((-4.9*pow(distanceToRing, 2)) / (pow(cos(70*3.1416/180), 2))) / (ringHeight-tan(70*3.1416/180)*distanceToRing), 0.5);
+  double offSetFactor = 1.1; // of set function maybe linear?? Might be wrong
+  double exitAngularVelocity = ((exitVelocity/((3.1416*4*25.4)/1000)) * (2*3.1416)) * offSetFactor;  // radians per second (times exitAngularVelocity by of set value)
 }
-=======
-// VisionSnapStrat::VisionSnapStrat(std::string name) : wml::Strategy(name) {
-//   SetCanBeInterrupted(true);
-//   SetCanBeReused(true);
-//   // Requires(&vision);
-//   // SetPassive(true);
-//   std::cout << "vision snap strat" << std::endl;
-// }
-
-// void VisionSnapStrat::OnUpdate(double dt) {
-//   // std::cout << "Fuck" << std::endl;
-//   auto inst = nt::NetworkTableInstance::GetDefault();
-//   auto snapTable = inst.GetTable("Snap vision stuff");
-//   // snapTable->GetEntry("isOnTarget").SetBoolean(isInnerCircle);
-
-//   double pitch = _visionTable->GetEntry("targetPitch").GetDouble(0);
-
-//   double newSpeed = (fixSpeed2-fixSpeed1)/(fixPitch2-fixPitch1)*(pitch-fixPitch1)+fixSpeed1;
-//   snapTable->GetEntry("newSpeed").SetDouble(newSpeed);
-
-
-//   // if (pitch <= -18 && pitch >= -22) {
-//   //   isInnerCircle = true;
-//   //   std::cout << "inner target" << std::endl;
-//   // } else {
-//   //   isInnerCircle = false;
-//   // }
-// } //-20 inner circle
->>>>>>> Stashed changes
