@@ -23,14 +23,14 @@ class VisionAlignment : public wml::Strategy {
   bool _track = false;
 };
 
-class VisionSnapStrat : public wml::Strategy {
- public:
-  VisionSnapStrat(std::string name);
+// class VisionSnapStrat : public wml::Strategy {
+//  public:
+//   VisionSnapStrat(std::string name);
 
-  void OnStart() override;
-  void OnUpdate(double dt) override;
+//   void OnStart() override;
+//   void OnUpdate(double dt) override;
 
- private:
-  std::shared_ptr<nt::NetworkTable> _visionTable = nt::NetworkTableInstance::GetDefault().GetTable("photonvision/visionCam");
-  bool _rightDistance = false;
-};
+//  private:
+//   std::shared_ptr<nt::NetworkTable> _visionTable = nt::NetworkTableInstance::GetDefault().GetTable("photonvision/visionCam");
+//   bool _rightDistance = false;
+// };
