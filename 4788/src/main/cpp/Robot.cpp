@@ -2,6 +2,8 @@
 #include "Strategy/DrivetrainTrajectoryStrategy.h"
 #include "Strategy/DriveToDistanceStrategy.h"
 
+#include "Calibration/ShooterCalibration.h"
+
 using namespace frc;
 using namespace wml;
 
@@ -18,6 +20,8 @@ void t2000(Terminator terminate) {
 void Robot::RobotInit() {
   //Init the controllers
   ControlMap::InitSmartControllerGroup(robotMap.contGroup);
+
+  _cal_mode = nullptr;
 
   auto camera = CameraServer::GetInstance()->StartAutomaticCapture(0);
   camera.SetFPS(30);
@@ -69,6 +73,9 @@ void Robot::RobotInit() {
 }
 
 void Robot::Update(double dt) {
+  if (_cal_mode != nullptr) {
+    _cal_mode->OnUpdate(dt);
+  }
   StrategyController::Update(dt);
 }
 
@@ -180,5 +187,11 @@ void Robot::TeleopPeriodic() {
 }
 
 // During Test Logic
-void Robot::TestInit() {}
-void Robot::TestPeriodic() {}
+void Robot::TestInit() {
+  std::cout << "Calibration Mode? Options: 'A' for Shooter" << std::endl;
+  InterruptAll(true);
+}
+
+void Robot::TestPeriodic() {
+  Schedule(_auto.ShooterCal(*shooter));
+}

@@ -11,6 +11,7 @@
 #include "Climber.h"
 #include "Auto.h"
 
+#include "Calibration/Calibration.h"
 
 #include "Strategy/ShooterStrategy.h"
 #include "Strategy/IntakeStrategy.h"
@@ -56,7 +57,6 @@ public:
 
   void Update(double dt) override;
 
-private:
   RobotMap robotMap;
   Trajectories trajectories;
   wml::Drivetrain *drivetrain;
@@ -64,9 +64,12 @@ private:
   Intake *intake;
   Climber *climber;
 
+ private:
   Auto _auto;
 
   bool outToggle = false;
   bool climberToggle = false;
   bool isAiming = false;
+
+  std::shared_ptr<CalibrationMode> _cal_mode;
 };

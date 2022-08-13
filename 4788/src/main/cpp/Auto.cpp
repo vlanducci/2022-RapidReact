@@ -6,6 +6,7 @@
 #include "Strategy/VisionAlignment.h"
 #include "Strategy/IntakeStrategy.h"
 #include "Strategy/ShooterStrategy.h"
+#include "Calibration/ShooterCalibration.h"
 
 std::shared_ptr<wml::Strategy> Auto::FiveBallTerminal(wml::Drivetrain &drivetrain, Intake &intake, Shooter &shooter) {
   auto autoStrat = wml::StrategyBuilder{}.Start() //TODO set timeout to last intake in case of shoddy HP
@@ -110,6 +111,13 @@ std::shared_ptr<wml::Strategy> Auto::Vision(wml::Drivetrain &drivetrain) {
 std::shared_ptr<wml::Strategy> Auto::TurningTest(wml::Drivetrain &drivetrain, Intake &intake, Shooter &shooter) {
   auto autoStrat = wml::StrategyBuilder{}.Start()
     ->Add(std::make_shared<DrivetrainAngleStrategy>("Turn to hub", drivetrain, 10))
+    ->Build();
+  return autoStrat;
+};
+
+std::shared_ptr<wml::Strategy> Auto::ShooterCal(Shooter &shooter) {
+  auto autoStrat = wml::StrategyBuilder{}.Start()
+    ->Add(std::make_shared<ShooterCalibration>("Turn to hub", shooter))
     ->Build();
   return autoStrat;
 };
