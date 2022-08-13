@@ -49,12 +49,12 @@ SnapStrat::SnapStrat(std::string name) : wml::Strategy(name){
 }
 
 void SnapStrat::OnUpdate(double dt) {
-  double cameraAngle = 70;
+  double launchAngle = 70;
   double pitch = 0;
-  double tapeHeight = 0;
-  double ringHeight = 0;
+  double tapeHeight = 2.605;
+  double ringHeight = 2.5;
   double distanceToRing = 0.679+tapeHeight/tan(pitch*3.1416/180);  // Centre of ring in meters
-  double exitVelocity = pow(((-4.9*pow(distanceToRing, 2)) / (pow(cos(70*3.1416/180), 2))) / (ringHeight-tan(70*3.1416/180)*distanceToRing), 0.5);
+  double exitVelocity = pow(((-4.9*pow(distanceToRing, 2)) / (pow(cos(launchAngle*3.1416/180), 2))) / (ringHeight-tan(launchAngle*3.1416/180)*distanceToRing), 0.5);
   double offSetFactor = 1.1; // of set function maybe linear?? Might be wrong
   double exitAngularVelocity = ((exitVelocity/((3.1416*4*25.4)/1000)) * (2*3.1416)) * offSetFactor;  // radians per second (times exitAngularVelocity by of set value)
 }
