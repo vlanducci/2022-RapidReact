@@ -6,6 +6,7 @@
 #include "RobotControl.h"
 #include "control/MotorFilters.h"
 #include "DriveToDistanceStrategy.h"
+#include "Shooter.h"
 
 class VisionAlignment : public wml::Strategy {
  public:
@@ -23,12 +24,14 @@ class VisionAlignment : public wml::Strategy {
   bool _track = false;
 };
 
-class SnapStrat : public wml::Strategy {
+class VisionDistance : public wml::Strategy {
  public:
-  SnapStrat(std::string name);
+  VisionDistance(std::string name, Shooter &shooter);
 
+  void OnStart() override;
   void OnUpdate(double dt) override;
 
  private:
-
+  Shooter &_shooter;
+  std::shared_ptr<nt::NetworkTable> _visionTable = nt::NetworkTableInstance::GetDefault().GetTable("photonvision/visionCam");
 };

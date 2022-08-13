@@ -138,6 +138,7 @@ void Robot::AutonomousInit() {
   std::cout << "TEST " << success << std::endl;
 }
 void Robot::AutonomousPeriodic() {
+  Schedule(_auto.Vision(*drivetrain));
 }
 
 // Manual Robot Logic
